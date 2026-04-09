@@ -1,5 +1,3 @@
-import { site } from "@/lib/site";
-
 const buttonBase =
   "inline-flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-semibold transition active:scale-[0.98]";
 
@@ -11,17 +9,13 @@ export function Hero() {
     >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,#000_100%)]" />
       <div className="relative mx-auto max-w-3xl">
-        <p className="font-[var(--font-display)] text-sm uppercase tracking-[0.2em] text-[#F52500]">
-          {site.name}
-        </p>
         <h1
           id="hero-heading"
-          className="mt-2 font-[var(--font-display)] text-5xl leading-none tracking-[0.04em] text-white md:text-7xl"
+          className="font-[var(--font-display)] text-5xl leading-none tracking-[0.04em] text-white md:text-7xl"
         >
           Strength through discipline
         </h1>
-        <p className="mx-auto mt-4 max-w-[40ch] text-lg text-neutral-400">{site.mission}</p>
-        <p className="mx-auto mt-3 max-w-[36ch] text-sm text-neutral-500">
+        <p className="mx-auto mt-4 max-w-[40ch] text-lg text-neutral-400">
           Brazilian Jiu Jitsu and boxing — structured classes for every age and level.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
