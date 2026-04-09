@@ -17,8 +17,9 @@ export function Programs() {
         >
           Programs
         </h2>
-        <p className="mx-auto mt-2 max-w-[46ch] text-center text-neutral-400">
-          Brazilian Jiu Jitsu, boxing, and Young Warriors — each program has its own track in our member system.
+        <p className="mx-auto mt-2 max-w-[52ch] text-center text-neutral-400">
+          Brazilian Jiu Jitsu (BJJ), boxing, kickboxing, and Young Warriors youth martial arts — each program has its
+          own track in our member system.
         </p>
 
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -41,10 +42,12 @@ export function Programs() {
           </article>
 
           <article className="rounded-xl border border-white/10 bg-gradient-to-br from-[#111] to-[#1a0a08] p-8">
-            <h3 className="font-[var(--font-display)] text-3xl tracking-[0.05em] text-white md:text-4xl">Boxing</h3>
+            <h3 className="font-[var(--font-display)] text-3xl tracking-[0.05em] text-white md:text-4xl">
+              Boxing &amp; kickboxing
+            </h3>
             <p className="mt-3 text-neutral-400">
-              Footwork, defense, and conditioning on the bags and in partner drills. Competition track available for
-              members who want to test themselves.
+              Boxing and kickboxing: footwork, defense, and conditioning on the bags and in partner drills. Competition
+              track available for members who want to test themselves.
             </p>
             <a
               className={`${buttonBase} mt-5 bg-[#F52500] text-white hover:bg-[#ff4a33]`}

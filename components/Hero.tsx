@@ -15,8 +15,9 @@ export function Hero() {
         >
           Strength through discipline
         </h1>
-        <p className="mx-auto mt-4 max-w-[40ch] text-lg text-neutral-400">
-          Brazilian Jiu Jitsu and boxing — structured classes for every age and level.
+        <p className="mx-auto mt-4 max-w-[44ch] text-lg text-neutral-400">
+          Martial arts in Wadena: Brazilian Jiu Jitsu (BJJ), boxing, and kickboxing — structured classes for every age
+          and level.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <a

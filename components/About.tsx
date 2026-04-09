@@ -26,7 +26,7 @@ export function About() {
 
           <article className="rounded-xl border border-white/10 bg-[#111] p-7 shadow-2xl">
             <h3 className="font-[var(--font-display)] text-3xl tracking-[0.05em] text-[#F52500]">Our values</h3>
-            <ul className="mt-4 space-y-2 text-neutral-400">
+            <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-4 text-white font-semibold">
               {site.values.map((v) => (
                 <li key={v} className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#F52500]" aria-hidden />
@@ -39,8 +39,9 @@ export function About() {
           <article className="rounded-xl border border-white/10 bg-[#111] p-7 shadow-2xl lg:col-span-2">
             <h3 className="font-[var(--font-display)] text-3xl tracking-[0.05em] text-[#F52500]">Training</h3>
             <p className="mt-4 text-neutral-400">
-              Technique first — whether you are learning your first armbar or sharpening your jab. Our coaches break
-              skills into steps you can repeat, then pressure-test them safely with partners who match your level.
+              Technique first — whether your goals are Brazilian Jiu Jitsu (BJJ), boxing, kickboxing, or martial arts
+              more broadly. Our coaches break skills into steps you can repeat, then pressure-test them safely with
+              partners who match your level.
             </p>
             <p className="mt-4 text-neutral-400">
               You will find no egos here: everyone taps, everyone resets, and everyone helps the next person learn.

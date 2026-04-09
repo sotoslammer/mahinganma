@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Source_Sans_3 } from "next/font/google";
+import { JsonLd } from "@/components/JsonLd";
+import { getDefaultDescription, getOrganizationJsonLd, getWebSiteJsonLd, seoKeywords } from "@/lib/seo";
+import { site } from "@/lib/site";
 import "./globals.css";
 
 const fontDisplay = Bebas_Neue({
@@ -13,10 +16,33 @@ const fontBody = Source_Sans_3({
   variable: "--font-body",
 });
 
+const description = getDefaultDescription();
+
 export const metadata: Metadata = {
-  title: "Mahingan Martial Arts — BJJ & Boxing",
-  description:
-    "Mahingan Martial Arts: Brazilian Jiu Jitsu, boxing, and Young Warriors youth BJJ. Improve lives through martial arts.",
+  metadataBase: new URL(site.url),
+  title: {
+    default: `${site.name} | Martial Arts, BJJ, Boxing & Kickboxing | Wadena, SK`,
+    template: `%s | ${site.name}`,
+  },
+  description,
+  keywords: [...seoKeywords],
+  authors: [{ name: site.name }],
+  creator: site.name,
+  openGraph: {
+    type: "website",
+    locale: "en_CA",
+    url: site.url,
+    siteName: site.name,
+    title: `${site.name} — Martial Arts, BJJ, Boxing & Kickboxing`,
+    description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${site.name} — Martial Arts, BJJ, Boxing & Kickboxing`,
+    description,
+  },
+  robots: { index: true, follow: true },
+  alternates: { canonical: "/" },
 };
 
 export default function RootLayout({
@@ -25,8 +51,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${fontDisplay.variable} ${fontBody.variable}`}>{children}</body>
+    <html lang="en-CA">
+      <body className={`${fontDisplay.variable} ${fontBody.variable}`}>
+        <JsonLd data={getOrganizationJsonLd()} />
+        <JsonLd data={getWebSiteJsonLd()} />
+        {children}
+      </body>
     </html>
   );
 }
