@@ -35,11 +35,13 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: `${site.name} — Martial Arts, BJJ, Boxing & Kickboxing`,
     description,
+    images: [{ url: "/logo.png", width: 512, height: 512, alt: `${site.name} logo` }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${site.name} — Martial Arts, BJJ, Boxing & Kickboxing`,
     description,
+    images: ["/logo.png"],
   },
   robots: { index: true, follow: true },
   alternates: { canonical: "/" },

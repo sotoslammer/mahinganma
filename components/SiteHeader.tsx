@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const navLinks = [
@@ -46,9 +47,22 @@ export function SiteHeader({ siteName }: { siteName: string }) {
         className="sticky top-0 z-50 border-b border-white/10 bg-black/80 px-6 py-4 backdrop-blur"
       >
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between">
-          <a className="font-[var(--font-display)] text-3xl tracking-[0.06em] text-white" href="#top">
-            {logoFirst}
-            {logoRest ? <span className="text-[#F52500]"> {logoRest}</span> : null}
+          <a
+            className="flex min-w-0 items-center gap-3 font-[var(--font-display)] text-2xl tracking-[0.06em] text-white sm:text-3xl"
+            href="#top"
+          >
+            <Image
+              src="/logo.png"
+              alt=""
+              width={48}
+              height={48}
+              className="h-9 w-9 shrink-0 object-contain sm:h-11 sm:w-11"
+              priority
+            />
+            <span className="truncate">
+              {logoFirst}
+              {logoRest ? <span className="text-[#F52500]"> {logoRest}</span> : null}
+            </span>
           </a>
 
           <button

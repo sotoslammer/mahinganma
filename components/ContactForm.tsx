@@ -2,9 +2,17 @@
 
 import { FormEvent, useState } from "react";
 
+type SubmittedFields = {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+};
+
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [submitting, setSubmitting] = useState(false);
+  const [errorDetail, setErrorDetail] = useState<{ message: string; submitted?: SubmittedFields } | null>(null);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -19,8 +27,16 @@ export function ContactForm() {
       website: typeof website === "string" ? website : "",
     };
 
+    const clientSubmitted: SubmittedFields = {
+      name: body.name,
+      email: body.email,
+      phone: body.phone,
+      message: body.message,
+    };
+
     setSubmitting(true);
     setStatus("idle");
+    setErrorDetail(null);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -32,9 +48,38 @@ export function ContactForm() {
         form.reset();
       } else {
         setStatus("error");
+        let message = "Something went wrong. Please email us or try again.";
+        let submitted: SubmittedFields | undefined;
+        try {
+          const data = (await res.json()) as {
+            error?: string;
+            submitted?: SubmittedFields;
+          };
+          if (typeof data.error === "string" && data.error.trim()) {
+            message = data.error;
+          }
+          if (data.submitted && typeof data.submitted === "object") {
+            submitted = {
+              name: String(data.submitted.name ?? ""),
+              email: String(data.submitted.email ?? ""),
+              phone: String(data.submitted.phone ?? ""),
+              message: String(data.submitted.message ?? ""),
+            };
+          }
+        } catch {
+          /* use defaults */
+        }
+        setErrorDetail({
+          message,
+          submitted: submitted ?? clientSubmitted,
+        });
       }
     } catch {
       setStatus("error");
+      setErrorDetail({
+        message: "Something went wrong. Please email us or try again.",
+        submitted: clientSubmitted,
+      });
     } finally {
       setSubmitting(false);
     }
@@ -97,10 +142,22 @@ export function ContactForm() {
           Thanks — we will get back to you soon.
         </p>
       )}
-      {status === "error" && (
-        <p className="mt-4 rounded-lg bg-red-950/40 px-3 py-2 text-sm text-red-200" role="status">
-          Something went wrong. Please email us or try again.
-        </p>
+      {status === "error" && errorDetail && (
+        <div className="mt-4 rounded-lg bg-red-950/40 px-3 py-2 text-sm text-red-200" role="status">
+          <p>{errorDetail.message}</p>
+          {errorDetail.submitted && (
+            <pre className="mt-3 max-h-64 overflow-auto whitespace-pre-wrap break-words rounded-md bg-black/40 p-3 font-mono text-xs text-neutral-300">
+              {[
+                `Name: ${errorDetail.submitted.name}`,
+                `Email: ${errorDetail.submitted.email}`,
+                errorDetail.submitted.phone ? `Phone: ${errorDetail.submitted.phone}` : "Phone: (not provided)",
+                "",
+                "Message:",
+                errorDetail.submitted.message,
+              ].join("\n")}
+            </pre>
+          )}
+        </div>
       )}
     </form>
   );

@@ -20,11 +20,42 @@ const contactBodySchema = z.object({
     .pipe(z.string()),
 });
 
+type PublicSubmitted = {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+};
+
+function submittedFromUnknown(payload: unknown): PublicSubmitted | undefined {
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+    return undefined;
+  }
+  const o = payload as Record<string, unknown>;
+  const str = (k: string) => (typeof o[k] === "string" ? o[k] : "");
+  const snap: PublicSubmitted = {
+    name: str("name"),
+    email: str("email"),
+    phone: str("phone"),
+    message: str("message"),
+  };
+  if (!snap.name && !snap.email && !snap.phone && !snap.message) {
+    return undefined;
+  }
+  return snap;
+}
+
+function publicSubmitted(data: PublicSubmitted): PublicSubmitted {
+  return {
+    name: data.name,
+    email: data.email,
+    phone: data.phone,
+    message: data.message,
+  };
+}
+
 export async function POST(request: Request) {
   const from = process.env.RESEND_FROM;
-  if (!resend || !process.env.RESEND_API_KEY || !from) {
-    return Response.json({ error: "Email is not configured on the server." }, { status: 503 });
-  }
 
   let payload: unknown;
   try {
@@ -40,10 +71,22 @@ export async function POST(request: Request) {
   const parsed = contactBodySchema.safeParse(payload);
   if (!parsed.success) {
     const msg = parsed.error.issues[0]?.message ?? "Invalid request.";
-    return Response.json({ error: msg }, { status: 400 });
+    const submitted = submittedFromUnknown(payload);
+    return Response.json(
+      submitted ? { error: msg, submitted } : { error: msg },
+      { status: 400 },
+    );
   }
 
   const { name: n, email: e, phone: p, message: m, website } = parsed.data;
+  const snap = publicSubmitted({ name: n, email: e, phone: p, message: m });
+
+  if (!resend || !process.env.RESEND_API_KEY || !from) {
+    return Response.json(
+      { error: "Email is not configured on the server.", submitted: snap },
+      { status: 503 },
+    );
+  }
 
   if (website.trim() !== "") {
     return Response.json({ ok: true });
@@ -70,7 +113,13 @@ export async function POST(request: Request) {
 
   if (error) {
     console.error("[contact]", error);
-    return Response.json({ error: "Could not send your message. Please try again or email us directly." }, { status: 500 });
+    return Response.json(
+      {
+        error: "Could not send your message. Please try again or email us directly.",
+        submitted: snap,
+      },
+      { status: 500 },
+    );
   }
 
   return Response.json({ ok: true });
