@@ -1,4 +1,4 @@
-/** Replace signup URLs with your gym management system links and Formspree (or other) form endpoint. */
+/** Replace signup URLs with your gym management system links. Contact form posts to `/api/contact` (Resend). */
 export const site = {
   /** Canonical site URL (no trailing slash) — used for metadata, sitemap, and structured data */
   url: "https://mahinganma.com",
@@ -15,8 +15,6 @@ export const site = {
     youngWarriors: "https://kick.site/n2pownlr",
     trial: "https://kick.site/eda3bzl1",
   },
-  /** Formspree: https://formspree.io — replace YOUR_FORM_ID */
-  contactFormAction: "https://formspree.io/f/YOUR_FORM_ID",
   contact: {
     addressLines: ["201 1 ST NW", "Wadena, SK S0A 4J0"],
     phone: "(306) 716-1544",
