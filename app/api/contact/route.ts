@@ -1,15 +1,24 @@
 import { Resend } from "resend";
+import { z } from "zod";
 import { site } from "@/lib/site";
 
 export const runtime = "nodejs";
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
-const simpleEmailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function isNonEmptyString(v: unknown, max: number): v is string {
-  return typeof v === "string" && v.trim().length > 0 && v.length <= max;
-}
+const contactBodySchema = z.object({
+  name: z.string().trim().min(1, "Name is required.").max(200),
+  email: z.string().trim().email("A valid email is required.").max(320),
+  phone: z
+    .unknown()
+    .transform((v) => (typeof v === "string" ? v : ""))
+    .pipe(z.string().max(80, "Invalid phone.")),
+  message: z.string().trim().min(1, "Message is required.").max(10_000),
+  website: z
+    .unknown()
+    .transform((v) => (typeof v === "string" ? v : ""))
+    .pipe(z.string()),
+});
 
 export async function POST(request: Request) {
   const from = process.env.RESEND_FROM;
@@ -24,40 +33,28 @@ export async function POST(request: Request) {
     return Response.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  if (!payload || typeof payload !== "object") {
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
     return Response.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { name, email, phone, message, website } = payload as Record<string, unknown>;
+  const parsed = contactBodySchema.safeParse(payload);
+  if (!parsed.success) {
+    const msg = parsed.error.issues[0]?.message ?? "Invalid request.";
+    return Response.json({ error: msg }, { status: 400 });
+  }
 
-  if (typeof website === "string" && website.trim() !== "") {
+  const { name: n, email: e, phone: p, message: m, website } = parsed.data;
+
+  if (website.trim() !== "") {
     return Response.json({ ok: true });
   }
 
-  if (!isNonEmptyString(name, 200)) {
-    return Response.json({ error: "Name is required." }, { status: 400 });
-  }
-  if (!isNonEmptyString(email, 320) || !simpleEmailRe.test(email.trim())) {
-    return Response.json({ error: "A valid email is required." }, { status: 400 });
-  }
-  const phoneStr = typeof phone === "string" ? phone : "";
-  if (phoneStr.length > 80) {
-    return Response.json({ error: "Invalid phone." }, { status: 400 });
-  }
-  if (!isNonEmptyString(message, 10_000)) {
-    return Response.json({ error: "Message is required." }, { status: 400 });
-  }
-
   const to = process.env.CONTACT_TO_EMAIL ?? site.contact.email;
-  const n = name.trim();
-  const e = email.trim();
-  const p = phoneStr.trim();
-  const m = message.trim();
 
   const text = [
     `Name: ${n}`,
     `Email: ${e}`,
-    p ? `Phone: ${p}` : "Phone: (not provided)",
+    p.trim() ? `Phone: ${p.trim()}` : "Phone: (not provided)",
     "",
     "Message:",
     m,
