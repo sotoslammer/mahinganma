@@ -1,25 +1,31 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { site } from "@/lib/site";
 
 export function ContactForm() {
-  const [status, setStatus] = useState<"idle" | "success" | "error" | "config">("idle");
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [submitting, setSubmitting] = useState(false);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const action = site.contactFormAction;
-    if (action.includes("YOUR_FORM_ID")) {
-      setStatus("config");
-      return;
-    }
     const form = e.currentTarget;
     const fd = new FormData(form);
+    const website = fd.get("website");
+    const body = {
+      name: String(fd.get("name") ?? "").trim(),
+      email: String(fd.get("email") ?? "").trim(),
+      phone: String(fd.get("phone") ?? "").trim(),
+      message: String(fd.get("message") ?? "").trim(),
+      website: typeof website === "string" ? website : "",
+    };
+
+    setSubmitting(true);
+    setStatus("idle");
     try {
-      const res = await fetch(action, {
+      const res = await fetch("/api/contact", {
         method: "POST",
-        body: fd,
-        headers: { Accept: "application/json" },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(body),
       });
       if (res.ok) {
         setStatus("success");
@@ -29,6 +35,8 @@ export function ContactForm() {
       }
     } catch {
       setStatus("error");
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -36,7 +44,7 @@ export function ContactForm() {
     "w-full rounded-lg border border-white/10 bg-black px-4 py-3 text-neutral-200 outline-none transition focus:border-[#F52500]";
 
   return (
-    <form className="rounded-xl border border-white/10 bg-[#111] p-7" onSubmit={onSubmit}>
+    <form className="relative rounded-xl border border-white/10 bg-[#111] p-7" onSubmit={onSubmit}>
       <div className="mb-4">
         <label className="mb-1 block text-sm font-semibold text-neutral-400" htmlFor="name">
           Name
@@ -71,11 +79,17 @@ export function ContactForm() {
         />
       </div>
 
+      <div className="pointer-events-none absolute -left-[10000px] top-0 opacity-0" aria-hidden="true">
+        <label htmlFor="website">Website</label>
+        <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+      </div>
+
       <button
         type="submit"
-        className="inline-flex w-full items-center justify-center rounded-md bg-[#F52500] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#ff4a33] active:scale-[0.98]"
+        disabled={submitting}
+        className="inline-flex w-full items-center justify-center rounded-md bg-[#F52500] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#ff4a33] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
       >
-        Send message
+        {submitting ? "Sending…" : "Send message"}
       </button>
 
       {status === "success" && (
@@ -86,12 +100,6 @@ export function ContactForm() {
       {status === "error" && (
         <p className="mt-4 rounded-lg bg-red-950/40 px-3 py-2 text-sm text-red-200" role="status">
           Something went wrong. Please email us or try again.
-        </p>
-      )}
-      {status === "config" && (
-        <p className="mt-4 rounded-lg bg-red-950/40 px-3 py-2 text-sm text-red-200" role="status">
-          Set <code>contactFormAction</code> in <code>lib/site.ts</code> to your Formspree endpoint (or another POST
-          URL).
         </p>
       )}
     </form>
