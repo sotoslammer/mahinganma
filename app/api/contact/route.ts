@@ -55,8 +55,6 @@ function publicSubmitted(data: PublicSubmitted): PublicSubmitted {
 }
 
 export async function POST(request: Request) {
-  const from = process.env.RESEND_FROM;
-
   let payload: unknown;
   try {
     payload = await request.json();
@@ -81,15 +79,16 @@ export async function POST(request: Request) {
   const { name: n, email: e, phone: p, message: m, website } = parsed.data;
   const snap = publicSubmitted({ name: n, email: e, phone: p, message: m });
 
+  if (website.trim() !== "") {
+    return Response.json({ ok: true });
+  }
+
+  const from = process.env.RESEND_FROM;
   if (!resend || !process.env.RESEND_API_KEY || !from) {
     return Response.json(
       { error: "Email is not configured on the server.", submitted: snap },
       { status: 503 },
     );
-  }
-
-  if (website.trim() !== "") {
-    return Response.json({ ok: true });
   }
 
   const to = process.env.CONTACT_TO_EMAIL ?? site.contact.email;
