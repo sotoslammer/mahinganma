@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Source_Sans_3 } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { JsonLd } from "@/components/JsonLd";
 import { getDefaultDescription, getOrganizationJsonLd, getWebSiteJsonLd, seoKeywords } from "@/lib/seo";
 import { site } from "@/lib/site";
@@ -56,6 +57,7 @@ export default function RootLayout({
         <JsonLd data={getOrganizationJsonLd()} />
         <JsonLd data={getWebSiteJsonLd()} />
         {children}
+        <Analytics />
       </body>
     </html>
   );
