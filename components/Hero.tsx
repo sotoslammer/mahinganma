@@ -1,48 +1,74 @@
+import Image from "next/image";
 import { site } from "@/lib/site";
 
 const btnPrimary =
   "inline-flex items-center justify-center rounded-[7px] bg-accent px-[22px] py-[13px] text-sm font-medium text-white transition hover:bg-accent-hover active:scale-[0.98]";
 const linkDim = "text-dim text-sm underline decoration-dimmer underline-offset-[3px] transition hover:text-[#eaeaea]";
 
+const heroMain = {
+  src: "/hero/class-photo.png",
+  alt: "Mahingan Martial Arts students and coaches in a group BJJ class on blue mats",
+} as const;
+
+const heroSecondary = [
+  {
+    src: "/hero/instruction.png",
+    alt: "Coach instructing students during Brazilian Jiu-Jitsu training on the mats",
+  },
+  {
+    src: "/hero/training.png",
+    alt: "Students practicing Brazilian Jiu-Jitsu grappling during class",
+  },
+] as const;
+
 function HeroImagery({ className }: { className?: string }) {
-  const labelClass =
-    "font-[family-name:var(--font-mono)] text-[10px] font-medium uppercase tracking-[0.12em] text-dimmer";
   return (
     <div className={className}>
+      {/* Desktop: large class photo + two supporting images */}
       <div className="grid h-[min(460px,52vw)] grid-rows-[2fr_1fr] gap-3 max-md:hidden">
-        <div
-          className="hero-placeholder flex items-end rounded-xl border border-border-subtle p-3.5"
-          aria-hidden
-        >
-          <span className={labelClass}>Mat training</span>
+        <div className="relative min-h-0 overflow-hidden rounded-xl border border-border-subtle">
+          <Image
+            src={heroMain.src}
+            alt={heroMain.alt}
+            fill
+            className="object-cover object-center"
+            sizes="(max-width: 1200px) 45vw, 540px"
+            priority
+          />
         </div>
-        <div className="grid grid-cols-2 gap-3">
-          <div
-            className="hero-placeholder flex min-h-[120px] items-end rounded-xl border border-border-subtle p-3.5"
-            aria-hidden
-          >
-            <span className={labelClass}>Ring</span>
-          </div>
-          <div
-            className="hero-placeholder flex min-h-[120px] items-end rounded-xl border border-border-subtle p-3.5"
-            aria-hidden
-          >
-            <span className={labelClass}>Youth</span>
-          </div>
+        <div className="grid min-h-0 grid-cols-2 gap-3">
+          {heroSecondary.map((img) => (
+            <div key={img.src} className="relative min-h-[120px] overflow-hidden rounded-xl border border-border-subtle">
+              <Image
+                src={img.src}
+                alt={img.alt}
+                fill
+                className="object-cover object-center"
+                sizes="(max-width: 1200px) 22vw, 270px"
+              />
+            </div>
+          ))}
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-2 md:hidden">
-        <div
-          className="hero-placeholder flex h-[120px] items-end rounded-xl border border-border-subtle p-3"
-          aria-hidden
-        >
-          <span className={labelClass}>Mat</span>
+
+      {/* Mobile: full-width class photo, then two-column row for the other two */}
+      <div className="grid gap-2 md:hidden">
+        <div className="relative aspect-[5/3] overflow-hidden rounded-xl border border-border-subtle">
+          <Image
+            src={heroMain.src}
+            alt={heroMain.alt}
+            fill
+            className="object-cover object-center"
+            sizes="100vw"
+            priority
+          />
         </div>
-        <div
-          className="hero-placeholder flex h-[120px] items-end rounded-xl border border-border-subtle p-3"
-          aria-hidden
-        >
-          <span className={labelClass}>Ring</span>
+        <div className="grid grid-cols-2 gap-2">
+          {heroSecondary.map((img) => (
+            <div key={img.src} className="relative aspect-square overflow-hidden rounded-xl border border-border-subtle">
+              <Image src={img.src} alt={img.alt} fill className="object-cover object-center" sizes="50vw" />
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -76,7 +102,7 @@ export function Hero() {
           </h1>
 
           <p className="mt-5 max-w-[440px] text-base leading-relaxed text-dim md:mt-7 md:text-[17px]">
-            BJJ, boxing &amp; kickboxing in Wadena. Every age, every level.
+            BJJ &amp; boxing in Wadena. Every age, every level.
           </p>
 
           <div className="mt-6 flex flex-col gap-3 md:mt-9 md:flex-row md:items-center md:gap-3">

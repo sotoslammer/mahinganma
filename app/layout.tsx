@@ -23,7 +23,7 @@ const description = getDefaultDescription();
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} | Martial Arts, BJJ, Boxing & Kickboxing | Wadena, SK`,
+    default: `${site.name} | Martial Arts, BJJ & Boxing | Wadena, SK`,
     template: `%s | ${site.name}`,
   },
   description,
@@ -35,13 +35,13 @@ export const metadata: Metadata = {
     locale: "en_CA",
     url: site.url,
     siteName: site.name,
-    title: `${site.name} — Martial Arts, BJJ, Boxing & Kickboxing`,
+    title: `${site.name} — Martial Arts, BJJ & Boxing`,
     description,
     images: [{ url: "/logo.png", width: 512, height: 512, alt: `${site.name} logo` }],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — Martial Arts, BJJ, Boxing & Kickboxing`,
+    title: `${site.name} — Martial Arts, BJJ & Boxing`,
     description,
     images: ["/logo.png"],
   },

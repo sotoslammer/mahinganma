@@ -39,22 +39,19 @@ export function Schedule() {
     <section id="schedule" aria-labelledby="schedule-heading" className="px-5 pb-14 md:px-10 md:pb-[60px]">
       <div className="mx-auto max-w-[1200px]">
         <div className="flex flex-col gap-1 md:flex-row md:items-end md:justify-between">
-          <div className="md:hidden">
-            <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.15em] text-accent">
+          <div>
+            <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.15em] text-accent md:hidden">
               This week
             </p>
-            <h2 id="schedule-heading" className="mt-2 text-[30px] font-medium tracking-[-0.02em]">
-              Evening classes.
+            <h2
+              id="schedule-heading"
+              className="mt-2 text-[30px] font-medium tracking-[-0.02em] md:mt-0 md:text-4xl"
+            >
+              <span className="md:hidden">Evening classes.</span>
+              <span className="hidden md:inline">This week</span>
             </h2>
           </div>
-          <div className="hidden md:block">
-            <h2 id="schedule-heading" className="text-4xl font-medium tracking-[-0.02em]">
-              This week
-            </h2>
-          </div>
-          <p className="font-[family-name:var(--font-mono)] hidden text-[13px] text-dim md:block">
-            evenings · Wadena studio
-          </p>
+          <p className="font-[family-name:var(--font-mono)] hidden shrink-0 text-[13px] text-dim md:block">evenings</p>
         </div>
 
         {/* Mobile: card per day */}

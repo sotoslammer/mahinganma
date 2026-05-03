@@ -16,13 +16,6 @@ const programs = [
     href: site.signup.boxing,
   },
   {
-    tag: "KICK",
-    tagClass: "bg-accent",
-    title: "Kickboxing",
-    body: "Striking & conditioning in partner drills.",
-    href: site.signup.boxing,
-  },
-  {
     tag: "YW",
     tagClass: "bg-accent",
     title: "Young Warriors",
@@ -54,15 +47,15 @@ export function Programs() {
               id="programs-heading"
               className="mt-2 text-[30px] font-medium tracking-[-0.02em] md:mt-0 md:text-4xl"
             >
-              <span className="md:hidden">Four tracks.</span>
+              <span className="md:hidden">Three programs.</span>
               <span className="hidden md:inline">Programs</span>
             </h2>
             <p className="mt-2 text-sm text-dim md:hidden">Pick one or train across all.</p>
           </div>
-          <p className="hidden shrink-0 text-[13px] text-dim md:block">Four tracks. Pick one or train across all.</p>
+          <p className="hidden shrink-0 text-[13px] text-dim md:block">BJJ, boxing &amp; youth. Pick one or train across all.</p>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-2.5 max-md:auto-rows-fr md:mt-8 md:grid-cols-4 md:gap-3">
+        <div className="mt-6 grid grid-cols-2 gap-2.5 max-md:auto-rows-fr md:mt-8 md:grid-cols-3 md:gap-3">
           {programs.map((p) => (
             <article
               key={p.title}
