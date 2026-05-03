@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Source_Sans_3 } from "next/font/google";
+import { JetBrains_Mono, Outfit } from "next/font/google";
 import { JsonLd } from "@/components/JsonLd";
 import { getDefaultDescription, getOrganizationJsonLd, getWebSiteJsonLd, seoKeywords } from "@/lib/seo";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const fontDisplay = Bebas_Neue({
-  weight: "400",
+const fontSans = Outfit({
   subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-sans",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const fontBody = Source_Sans_3({
+const fontMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-body",
+  variable: "--font-mono",
+  weight: ["400", "500"],
 });
 
 const description = getDefaultDescription();
@@ -54,7 +55,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en-CA">
-      <body className={`${fontDisplay.variable} ${fontBody.variable}`}>
+      <body className={`${fontSans.variable} ${fontMono.variable}`}>
         <JsonLd data={getOrganizationJsonLd()} />
         <JsonLd data={getWebSiteJsonLd()} />
         {children}

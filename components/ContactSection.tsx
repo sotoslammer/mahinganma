@@ -2,15 +2,15 @@ import { ContactForm } from "./ContactForm";
 
 export function ContactSection() {
   return (
-    <section id="contact" aria-labelledby="contact-heading" className="px-6 py-12 md:py-18">
-      <div className="mx-auto max-w-6xl">
+    <section id="contact" aria-labelledby="contact-heading" className="px-5 py-14 md:px-10 md:py-[60px]">
+      <div className="mx-auto max-w-[1200px]">
         <h2
           id="contact-heading"
-          className="text-center font-[var(--font-display)] text-4xl tracking-[0.06em] text-white md:text-5xl"
+          className="text-center text-3xl font-medium tracking-[-0.02em] md:text-4xl"
         >
           Contact
         </h2>
-        <p className="mx-auto mt-2 max-w-[42ch] text-center text-neutral-400">
+        <p className="mx-auto mt-2 max-w-[42ch] text-center text-sm text-dim">
           Questions about age groups, private lessons, or corporate groups? Send a note.
         </p>
 

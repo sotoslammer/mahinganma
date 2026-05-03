@@ -6,7 +6,7 @@ export function SiteFooter({ siteName }: { siteName: string }) {
   const year = new Date().getFullYear();
   const telHref = site.contact.phone.replace(/\D/g, "");
   return (
-    <footer className="border-t border-white/10 bg-black px-6 py-8 text-center text-sm text-neutral-500">
+    <footer className="border-t border-border-subtle bg-[#050505] px-6 py-8 text-center text-sm text-dimmer">
       <div className="flex justify-center">
         <Image
           src="/logo.png"
@@ -27,19 +27,19 @@ export function SiteFooter({ siteName }: { siteName: string }) {
       </address>
 
       <p className="mt-4">
-        <a className="transition hover:text-[#F52500]" href={`tel:${telHref}`}>
+        <a className="transition hover:text-accent" href={`tel:${telHref}`}>
           {site.contact.phone}
         </a>
       </p>
       <p className="mt-1">
-        <a className="transition hover:text-[#F52500]" href={`mailto:${site.contact.email}`}>
+        <a className="transition hover:text-accent" href={`mailto:${site.contact.email}`}>
           {site.contact.email}
         </a>
       </p>
 
       <p className="mt-6">
         © {year} {siteName} ·{" "}
-        <a className="transition hover:text-[#F52500]" href="#top">
+        <a className="transition hover:text-accent" href="#top">
           Back to top
         </a>
       </p>

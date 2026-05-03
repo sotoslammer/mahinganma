@@ -14,9 +14,9 @@ export default function Home() {
       <SiteHeader siteName={site.name} />
       <main id="top">
         <Hero />
-        <About />
         <Programs />
         <Schedule />
+        <About />
         <SignupStrip />
         <ContactSection />
       </main>
