@@ -2,17 +2,16 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-
 const navLinks = [
-  { href: "#about", label: "About" },
   { href: "#programs", label: "Programs" },
   { href: "#schedule", label: "Schedule" },
-  { href: "#signup", label: "Sign up" },
-  { href: "#contact", label: "Contact" },
+  { href: "#about", label: "About" },
 ];
 
-const linkBase =
-  "inline-flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-semibold transition active:scale-[0.98]";
+const navMobileExtra = [{ href: "#contact", label: "Contact" }];
+
+const btnPrimarySm =
+  "inline-flex items-center justify-center rounded-[7px] bg-accent px-3.5 py-[7px] text-xs font-medium text-white transition hover:bg-accent-hover active:scale-[0.98]";
 
 export function SiteHeader({ siteName }: { siteName: string }) {
   const [open, setOpen] = useState(false);
@@ -44,11 +43,11 @@ export function SiteHeader({ siteName }: { siteName: string }) {
     <>
       <header
         ref={headerRef}
-        className="sticky top-0 z-50 border-b border-white/10 bg-black/80 px-6 py-4 backdrop-blur"
+        className="sticky top-0 z-50 border-b border-border-subtle bg-[#050505]/85 px-5 py-4 backdrop-blur-md md:px-10"
       >
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between">
+        <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between">
           <a
-            className="flex min-w-0 items-center gap-3 font-[var(--font-display)] text-2xl tracking-[0.06em] text-white sm:text-3xl"
+            className="flex min-w-0 items-center gap-2.5 text-[16px] font-medium text-[#eaeaea] md:gap-2.5 md:text-[18px]"
             href="#top"
           >
             <Image
@@ -56,35 +55,39 @@ export function SiteHeader({ siteName }: { siteName: string }) {
               alt=""
               width={48}
               height={48}
-              className="h-9 w-9 shrink-0 object-contain sm:h-11 sm:w-11"
+              className="h-7 w-7 shrink-0 object-contain md:h-[26px] md:w-[26px]"
               priority
             />
             <span className="truncate">
               {logoFirst}
-              {logoRest ? <span className="text-[#F52500]"> {logoRest}</span> : null}
+              {logoRest ? <span className="text-accent"> {logoRest}</span> : null}
             </span>
           </a>
 
           <button
             type="button"
-            className="rounded-md border border-white/15 px-3 py-2 text-sm text-neutral-200 md:hidden"
+            className="flex h-[38px] w-[38px] flex-col items-center justify-center gap-1 rounded-lg border border-border-subtle md:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((o) => !o)}
           >
-            Menu
+            <span className="h-0.5 w-4 bg-[#eaeaea]" />
+            <span className="h-0.5 w-4 bg-[#eaeaea]" />
           </button>
 
-          <nav className="hidden md:block" aria-label="Primary">
-            <ul className="flex items-center gap-7">
+          <nav className="hidden items-center gap-7 md:flex" aria-label="Primary">
+            <ul className="flex items-center gap-7 text-[13px] text-dim">
               {navLinks.map((l) => (
                 <li key={l.href}>
-                  <a className="text-neutral-400 transition hover:text-white" href={l.href}>
+                  <a className="transition hover:text-[#eaeaea]" href={l.href}>
                     {l.label}
                   </a>
                 </li>
               ))}
             </ul>
+            <a className={btnPrimarySm} href="#signup">
+              Start free intro
+            </a>
           </nav>
         </div>
       </header>
@@ -92,23 +95,19 @@ export function SiteHeader({ siteName }: { siteName: string }) {
       {open ? <div className="fixed inset-0 z-40 bg-black/60 md:hidden" /> : null}
       <nav
         aria-label="Mobile"
-        className={`fixed right-0 top-0 z-50 h-screen w-[min(280px,85vw)] border-l border-white/10 bg-[#111] p-6 pt-20 shadow-2xl transition-transform md:hidden ${open ? "translate-x-0" : "translate-x-full"}`}
+        className={`fixed right-0 top-0 z-50 h-screen w-[min(280px,85vw)] border-l border-border-subtle bg-[#0a0a0a] p-6 pt-24 shadow-2xl transition-transform md:hidden ${open ? "translate-x-0" : "translate-x-full"}`}
       >
-        <ul className="flex flex-col gap-5">
-          {navLinks.map((l) => (
+        <ul className="flex flex-col gap-5 text-dim">
+          {[...navLinks, ...navMobileExtra].map((l) => (
             <li key={l.href}>
-              <a className="text-neutral-400 transition hover:text-white" href={l.href} onClick={close}>
+              <a className="text-[15px] transition hover:text-[#eaeaea]" href={l.href} onClick={close}>
                 {l.label}
               </a>
             </li>
           ))}
           <li>
-            <a
-              className={`${linkBase} w-full bg-[#F52500] text-white hover:bg-[#ff4a33]`}
-              href="#signup"
-              onClick={close}
-            >
-              Enroll
+            <a className={`${btnPrimarySm} w-full py-3 text-sm`} href="#signup" onClick={close}>
+              Start free intro →
             </a>
           </li>
         </ul>

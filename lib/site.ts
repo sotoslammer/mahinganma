@@ -6,7 +6,12 @@ export const site = {
   mission: "Our mission is to help people improve their lives through martial arts.",
   guidingPrinciple: {
     phrase: "mino-pimowatosowin",
-    meaning: "A good life through martial arts is built on discipline and consistency—showing up, putting in the work, and striving to improve every day. With respect for your coaches and teammates, and the perseverance to push through challenges, each step on the mats becomes a path to growth, confidence, and lasting character.",
+    /** Shown after the phrase in the guiding-principle heading (e.g. "— a good life."). */
+    headlineRest: " — a good life.",
+    meaning:
+      "Built on showing up, doing the work, and respecting the people on the mat with you. No egos here: everyone taps, everyone resets, everyone helps the next person learn.",
+    newHere:
+      "Book a free intro — we'll pair you with a coach before your first class.",
   },
   values: ["Discipline", "Respect", "Consistency", "Perseverance"] as const,
   signup: {

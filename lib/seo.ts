@@ -6,13 +6,12 @@ export const seoKeywords = [
   "brazilian jiu jitsu",
   "bjj",
   "boxing",
-  "kickboxing",
   "Wadena",
   "Saskatchewan",
 ] as const;
 
 const defaultDescription =
-  "Mahingan Martial Arts in Wadena, SK offers martial arts training including Brazilian Jiu Jitsu (BJJ), boxing, kickboxing, and Young Warriors youth BJJ. Improve your life through disciplined training.";
+  "Mahingan Martial Arts in Wadena, SK offers Brazilian Jiu Jitsu (BJJ), boxing, and Young Warriors youth BJJ. Improve your life through disciplined training.";
 
 export function getDefaultDescription(): string {
   return defaultDescription;
@@ -58,13 +57,7 @@ export function getOrganizationJsonLd() {
       "@type": "AdministrativeArea",
       name: "Saskatchewan",
     },
-    knowsAbout: [
-      "Martial arts",
-      "Brazilian Jiu Jitsu",
-      "BJJ",
-      "Boxing",
-      "Kickboxing",
-    ],
+    knowsAbout: ["Martial arts", "Brazilian Jiu Jitsu", "BJJ", "Boxing"],
     sameAs: [site.social.instagram, site.social.facebook],
   };
 }

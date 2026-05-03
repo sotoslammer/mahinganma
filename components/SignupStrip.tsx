@@ -1,39 +1,32 @@
 import { site } from "@/lib/site";
 
-const buttonPrimary =
-  "inline-flex items-center justify-center rounded-md bg-[#F52500] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#ff4a33] active:scale-[0.98]";
-const buttonOutline =
-  "inline-flex items-center justify-center rounded-md border border-white/15 px-5 py-2.5 text-sm font-semibold text-neutral-200 transition hover:border-[#F52500] hover:text-[#F52500] active:scale-[0.98]";
+const btnPrimary =
+  "inline-flex w-full items-center justify-center rounded-[7px] bg-accent px-5 py-3.5 text-sm font-medium text-white transition hover:bg-accent-hover active:scale-[0.98] md:w-auto md:px-6";
 
 export function SignupStrip() {
   return (
     <section
-      className="border-y border-white/10 bg-gradient-to-br from-[#F52500]/10 to-black px-6 py-12 text-center"
+      className="px-5 py-12 md:px-10 md:py-14"
       id="signup"
       aria-labelledby="signup-heading"
     >
-      <h2
-        id="signup-heading"
-        className="font-[var(--font-display)] text-4xl tracking-[0.06em] text-white md:text-5xl"
-      >
-        Join through our member system
-      </h2>
-      <p className="mx-auto mt-2 max-w-[40ch] text-neutral-400">
-        Registration, waivers, and billing live in our gym management portal — use the link that matches your program.
-      </p>
-      <div className="mt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-        <a className={buttonPrimary} href={site.signup.bjj} target="_blank" rel="noopener noreferrer">
-          Enroll — Brazilian Jiu Jitsu
-        </a>
-        <a className={buttonPrimary} href={site.signup.boxing} target="_blank" rel="noopener noreferrer">
-          Enroll — Boxing
-        </a>
-        <a className={buttonPrimary} href={site.signup.youngWarriors} target="_blank" rel="noopener noreferrer">
-          Enroll — Young Warriors
-        </a>
-        <a className={buttonOutline} href={site.signup.trial} target="_blank" rel="noopener noreferrer">
-          Trial / visitor pass
-        </a>
+      <div className="mx-auto max-w-[520px] text-center md:max-w-[480px]">
+        <div className="rounded-[14px] border border-accent/30 bg-gradient-to-b from-[rgba(245,0,53,0.18)] to-[rgba(245,0,53,0.05)] px-5 py-6 md:px-6 md:py-6">
+          <h2 id="signup-heading" className="text-[22px] font-medium tracking-[-0.02em] md:text-2xl">
+            Step on the mat.
+          </h2>
+          <p className="mt-2 text-sm text-dim">First class is free.</p>
+          <div className="mt-4">
+            <a
+              className={btnPrimary}
+              href={site.signup.trial}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Start your free intro →
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );

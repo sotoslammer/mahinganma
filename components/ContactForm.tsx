@@ -86,33 +86,33 @@ export function ContactForm() {
   }
 
   const inputClass =
-    "w-full rounded-lg border border-white/10 bg-black px-4 py-3 text-neutral-200 outline-none transition focus:border-[#F52500]";
+    "w-full rounded-lg border border-border-strong/40 bg-[#0a0a0a] px-4 py-3 text-[#eaeaea] outline-none transition focus:border-accent";
 
   return (
     <form className="relative rounded-xl border border-white/10 bg-[#111] p-7" onSubmit={onSubmit}>
       <div className="mb-4">
-        <label className="mb-1 block text-sm font-semibold text-neutral-400" htmlFor="name">
+        <label className="mb-1 block text-sm font-medium text-dim" htmlFor="name">
           Name
         </label>
         <input className={inputClass} id="name" name="name" type="text" autoComplete="name" required />
       </div>
 
       <div className="mb-4">
-        <label className="mb-1 block text-sm font-semibold text-neutral-400" htmlFor="email">
+        <label className="mb-1 block text-sm font-medium text-dim" htmlFor="email">
           Email
         </label>
         <input className={inputClass} id="email" name="email" type="email" autoComplete="email" required />
       </div>
 
       <div className="mb-4">
-        <label className="mb-1 block text-sm font-semibold text-neutral-400" htmlFor="phone">
+        <label className="mb-1 block text-sm font-medium text-dim" htmlFor="phone">
           Phone <span className="font-normal opacity-80">(optional)</span>
         </label>
         <input className={inputClass} id="phone" name="phone" type="tel" autoComplete="tel" />
       </div>
 
       <div className="mb-4">
-        <label className="mb-1 block text-sm font-semibold text-neutral-400" htmlFor="message">
+        <label className="mb-1 block text-sm font-medium text-dim" htmlFor="message">
           Message
         </label>
         <textarea
@@ -132,7 +132,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="inline-flex w-full items-center justify-center rounded-md bg-[#F52500] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#ff4a33] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
+        className="inline-flex w-full items-center justify-center rounded-[7px] bg-accent px-5 py-2.5 text-sm font-medium text-white transition hover:bg-accent-hover active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
       >
         {submitting ? "Sending…" : "Send message"}
       </button>

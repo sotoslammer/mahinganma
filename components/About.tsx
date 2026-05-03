@@ -2,55 +2,37 @@ import { site } from "@/lib/site";
 
 export function About() {
   return (
-    <section id="about" aria-labelledby="about-heading" className="px-6 py-12 md:py-18">
-      <div className="mx-auto max-w-6xl">
-        <h2
-          id="about-heading"
-          className="text-center font-[var(--font-display)] text-4xl tracking-[0.06em] text-white md:text-5xl"
-        >
-          About us
-        </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-neutral-300">{site.mission}</p>
+    <section id="about" aria-labelledby="about-heading" className="px-5 pb-14 pt-10 md:px-10 md:pb-[60px] md:pt-[60px]">
+      <div className="mx-auto grid max-w-[1200px] gap-12 md:grid-cols-[1.4fr_1fr] lg:gap-12">
+        <div>
+          <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.15em] text-accent">
+            Guiding principle
+          </p>
+          <h2
+            id="about-heading"
+            className="mt-3 text-[26px] font-medium leading-snug tracking-[-0.02em] md:text-[34px]"
+          >
+            <span className="text-accent">{site.guidingPrinciple.phrase}</span>
+            {site.guidingPrinciple.headlineRest}
+          </h2>
+          <p className="mt-4 text-[15px] leading-relaxed text-dim md:mt-[18px] md:max-w-[520px] md:text-base">{site.guidingPrinciple.meaning}</p>
+          <p className="mt-4 text-sm leading-relaxed text-[#eaeaea] md:mt-[22px] md:max-w-[520px] md:text-[15px]">
+            <strong>New here?</strong> {site.guidingPrinciple.newHere}
+          </p>
+        </div>
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-3">
-          <article className="rounded-xl border border-white/10 bg-[#111] p-7 shadow-2xl lg:col-span-3">
-            <h3 className="font-[var(--font-display)] text-2xl tracking-[0.05em] text-[#F52500]">
-              Guiding principle
-            </h3>
-            <p className="mt-3 text-neutral-400">
-              <span className="font-semibold text-white">{site.guidingPrinciple.phrase}</span>
-              {" — "}
-              {site.guidingPrinciple.meaning}
-            </p>
-          </article>
-
-          <article className="rounded-xl border border-white/10 bg-[#111] p-7 shadow-2xl">
-            <h3 className="font-[var(--font-display)] text-3xl tracking-[0.05em] text-[#F52500]">Our values</h3>
-            <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-4 text-white font-semibold">
-              {site.values.map((v) => (
-                <li key={v} className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#F52500]" aria-hidden />
-                  {v}
-                </li>
-              ))}
-            </ul>
-          </article>
-
-          <article className="rounded-xl border border-white/10 bg-[#111] p-7 shadow-2xl lg:col-span-2">
-            <h3 className="font-[var(--font-display)] text-3xl tracking-[0.05em] text-[#F52500]">Training</h3>
-            <p className="mt-4 text-neutral-400">
-              Technique first — whether your goals are Brazilian Jiu Jitsu (BJJ), boxing, kickboxing, or martial arts
-              more broadly. Our coaches break skills into steps you can repeat, then pressure-test them safely with
-              partners who match your level.
-            </p>
-            <p className="mt-4 text-neutral-400">
-              You will find no egos here: everyone taps, everyone resets, and everyone helps the next person learn.
-            </p>
-            <p className="mt-4 text-neutral-400">
-              <strong className="text-white">New?</strong> Start with a fundamentals class — we will pair you with a
-              coach intro before you step on the mat or in the ring.
-            </p>
-          </article>
+        <div className="grid grid-cols-2 gap-2 md:flex md:flex-col md:gap-2.5">
+          {site.values.map((v, i) => (
+            <div
+              key={v}
+              className="flex items-center gap-2.5 rounded-[10px] border border-border-subtle bg-surface px-3.5 py-3 md:gap-5 md:px-5 md:py-4"
+            >
+              <span className="font-[family-name:var(--font-mono)] text-[10px] text-dimmer md:text-[11px]">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="text-[14px] font-medium md:text-[17px]">{v}</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>

@@ -17,7 +17,7 @@ function FacebookIcon({ className }: { className?: string }) {
 }
 
 const linkClass =
-  "text-neutral-500 transition hover:text-[#F52500] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F52500]";
+  "text-dimmer transition hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
 export function SocialLinks({ siteName }: { siteName: string }) {
   return (

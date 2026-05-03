@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Source_Sans_3 } from "next/font/google";
+import { JetBrains_Mono, Outfit } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { JsonLd } from "@/components/JsonLd";
 import { getDefaultDescription, getOrganizationJsonLd, getWebSiteJsonLd, seoKeywords } from "@/lib/seo";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const fontDisplay = Bebas_Neue({
-  weight: "400",
+const fontSans = Outfit({
   subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-sans",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const fontBody = Source_Sans_3({
+const fontMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-body",
+  variable: "--font-mono",
+  weight: ["400", "500"],
 });
 
 const description = getDefaultDescription();
@@ -22,7 +23,7 @@ const description = getDefaultDescription();
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} | Martial Arts, BJJ, Boxing & Kickboxing | Wadena, SK`,
+    default: `${site.name} | Martial Arts, BJJ & Boxing | Wadena, SK`,
     template: `%s | ${site.name}`,
   },
   description,
@@ -34,13 +35,13 @@ export const metadata: Metadata = {
     locale: "en_CA",
     url: site.url,
     siteName: site.name,
-    title: `${site.name} — Martial Arts, BJJ, Boxing & Kickboxing`,
+    title: `${site.name} — Martial Arts, BJJ & Boxing`,
     description,
     images: [{ url: "/logo.png", width: 512, height: 512, alt: `${site.name} logo` }],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — Martial Arts, BJJ, Boxing & Kickboxing`,
+    title: `${site.name} — Martial Arts, BJJ & Boxing`,
     description,
     images: ["/logo.png"],
   },
@@ -55,7 +56,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en-CA">
-      <body className={`${fontDisplay.variable} ${fontBody.variable}`}>
+      <body className={`${fontSans.variable} ${fontMono.variable}`}>
         <JsonLd data={getOrganizationJsonLd()} />
         <JsonLd data={getWebSiteJsonLd()} />
         {children}
