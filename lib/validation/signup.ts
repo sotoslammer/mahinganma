@@ -68,7 +68,7 @@ const SIGNATURE_MAX_BYTES = 250_000;
 const PNG_MAGIC = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
 
 export type SignatureDecodeResult =
-  | { ok: true; bytes: Uint8Array; width: number; height: number }
+  | { ok: true; bytes: Uint8Array<ArrayBuffer>; width: number; height: number }
   | { ok: false; error: string };
 
 /**
@@ -83,7 +83,7 @@ export function decodeSignature(value: unknown): SignatureDecodeResult {
     return { ok: false, error: "Please draw your signature in the box." };
   }
 
-  let bytes: Uint8Array;
+  let bytes: Uint8Array<ArrayBuffer>;
   try {
     const binary = atob(value.slice(SIGNATURE_PREFIX.length));
     bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));

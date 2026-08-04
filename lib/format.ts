@@ -29,6 +29,23 @@ export function toIsoDate(value: Date): string {
   return value.toISOString().slice(0, 10);
 }
 
+/**
+ * Today's date in the gym's zone as `YYYY-MM-DD`.
+ *
+ * The signup page hands this to the form so the browser derives minor status from the
+ * same day the server would, rather than from a visitor's own clock and zone.
+ */
+export function todayIso(now: Date = new Date()): string {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    timeZone: DISPLAY_TIME_ZONE,
+  }).formatToParts(now);
+  const get = (type: Intl.DateTimeFormatPartTypes) => parts.find((p) => p.type === type)?.value ?? "";
+  return `${get("year")}-${get("month")}-${get("day")}`;
+}
+
 export function formatDateTime(value: Date): string {
   return new Intl.DateTimeFormat("en-CA", {
     dateStyle: "long",
