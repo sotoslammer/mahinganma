@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { site } from "@/lib/site";
 
 const programs = [
@@ -64,14 +65,12 @@ export function Programs() {
               <ProgramTag className={p.tagClass}>{p.tag}</ProgramTag>
               <h3 className="text-[15px] font-medium leading-tight md:text-xl">{p.title}</h3>
               <p className="flex-1 text-[12px] leading-relaxed text-dim md:text-[13px] md:leading-[1.55]">{p.body}</p>
-              <a
+              <Link
                 href={p.href}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="border-t border-border-subtle pt-2 text-[12px] text-[#eaeaea] no-underline transition hover:text-white md:pt-3.5 md:text-[13px]"
               >
-                Learn more →
-              </a>
+                Sign up →
+              </Link>
             </article>
           ))}
         </div>
