@@ -4,7 +4,7 @@ import { after } from "next/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { prisma } from "@/lib/db";
+import { getPrisma } from "@/lib/db";
 import { fullName, namesMatch } from "@/lib/format";
 import { sendSignupEmails } from "@/lib/email";
 import { PROGRAM_LABELS, decodeSignature, isMinorOn, parseIsoDate, signupSchema } from "@/lib/validation/signup";
@@ -90,7 +90,7 @@ export async function submitSignup(
   let studentId: string;
   let waiverId: string;
   try {
-    const student = await prisma.student.create({
+    const student = await getPrisma().student.create({
       data: {
         firstName: data.firstName,
         lastName: data.lastName,

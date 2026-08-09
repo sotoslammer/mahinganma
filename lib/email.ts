@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import { prisma } from "@/lib/db";
+import { getPrisma } from "@/lib/db";
 import { formatDateOnly, formatDateTime, fullName } from "@/lib/format";
 import { PROGRAM_LABELS, ageOn, type ProgramValue } from "@/lib/validation/signup";
 import { renderWaiverPdf, waiverFileName } from "@/lib/waiver-pdf";
@@ -39,6 +39,7 @@ export async function sendSignupEmails({
     return;
   }
 
+  const prisma = getPrisma();
   const student = await prisma.student.findUnique({
     where: { id: studentId },
     include: { waivers: { where: { id: waiverId } } },

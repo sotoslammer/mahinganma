@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+import { getPrisma } from "@/lib/db";
 import { PROGRAM_VALUES, type ProgramValue } from "@/lib/validation/signup";
 
 /**
@@ -43,6 +43,7 @@ export async function listStudents(filters: StudentFilters) {
       : {}),
   };
 
+  const prisma = getPrisma();
   const [students, total] = await Promise.all([
     prisma.student.findMany({
       where,
@@ -70,7 +71,7 @@ export async function listStudents(filters: StudentFilters) {
 }
 
 export async function getStudent(id: string) {
-  return prisma.student.findUnique({
+  return getPrisma().student.findUnique({
     where: { id },
     select: {
       id: true,
@@ -114,7 +115,7 @@ export async function getStudent(id: string) {
 
 /** Waiver detail without the image bytes; the signature is streamed by its own route. */
 export async function getWaiver(studentId: string, waiverId: string) {
-  return prisma.waiver.findFirst({
+  return getPrisma().waiver.findFirst({
     // Matching on both ids keeps a waiver from being read through another student's URL.
     where: { id: waiverId, studentId },
     select: {
@@ -143,7 +144,7 @@ export async function getWaiver(studentId: string, waiverId: string) {
 
 /** Full record including image bytes, for the signature and PDF routes only. */
 export async function getWaiverWithSignature(studentId: string, waiverId: string) {
-  return prisma.waiver.findFirst({
+  return getPrisma().waiver.findFirst({
     where: { id: waiverId, studentId },
     include: {
       student: {

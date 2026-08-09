@@ -51,11 +51,28 @@ sections, set `WAIVER_IS_DRAFT` to `false`, and bump `WAIVER_VERSION`.
 | `npm run db:deploy` | Apply existing migrations (production) |
 | `npm run db:studio` | Browse the database |
 
-## Deploying
+## Deploying (Vercel + Neon)
 
-Set `DATABASE_URL`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`, `RESEND_API_KEY`, `RESEND_FROM`
-and `SIGNUP_NOTIFY_EMAIL` in your Vercel project, then run `npm run db:deploy` against the
-production database whenever a migration is added.
+1. Create a Neon project (or add Neon from the Vercel Marketplace under Storage).
+2. In the Vercel project → **Settings → Environment Variables**, set these for
+   **Preview** and **Production**:
+
+   | Variable | Value |
+   | --- | --- |
+   | `DATABASE_URL` | Neon **pooled** connection string (`…-pooler…`, `sslmode=require`) |
+   | `DATABASE_URL_UNPOOLED` | Neon **direct** connection string (no `-pooler`) |
+   | `ADMIN_PASSWORD` | Password for `/admin` |
+   | `ADMIN_SESSION_SECRET` | Long random string (32+ bytes hex) |
+   | `RESEND_API_KEY` / `RESEND_FROM` | Existing Resend credentials |
+   | `SIGNUP_NOTIFY_EMAIL` | Optional; where signup notifications go |
+
+   If Neon was installed via the Vercel Marketplace, `DATABASE_URL` /
+   `DATABASE_URL_UNPOOLED` (or `POSTGRES_URL` / `POSTGRES_URL_NON_POOLING`) are
+   usually injected for you — confirm they appear under Environment Variables
+   for the Preview environment, not only Production.
+3. Redeploy the preview (push a commit, or Redeploy from the Vercel deployment).
+   The build runs `prisma migrate deploy` automatically when a database URL is
+   present, so the Student/Waiver tables are created on first deploy.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
