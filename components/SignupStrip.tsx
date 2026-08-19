@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { site } from "@/lib/site";
 
 const btnPrimary =
@@ -17,14 +18,9 @@ export function SignupStrip() {
           </h2>
           <p className="mt-2 text-sm text-dim">First class is free.</p>
           <div className="mt-4">
-            <a
-              className={btnPrimary}
-              href={site.signup.trial}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <Link className={btnPrimary} href={site.signup.trial}>
               Start your free intro →
-            </a>
+            </Link>
           </div>
         </div>
       </div>

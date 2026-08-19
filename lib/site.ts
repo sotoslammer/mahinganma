@@ -1,4 +1,4 @@
-/** Replace signup URLs with your gym management system links. Contact form posts to `/api/contact` (Resend). */
+/** Signup runs in-app at `/signup`; contact form posts to `/api/contact` (Resend). */
 export const site = {
   /** Canonical site URL (no trailing slash) — used for metadata, sitemap, and structured data */
   url: "https://mahinganma.com",
@@ -14,11 +14,12 @@ export const site = {
       "Book a free intro — we'll pair you with a coach before your first class.",
   },
   values: ["Discipline", "Respect", "Consistency", "Perseverance"] as const,
+  /** Internal signup routes. `?program=` preselects the program on the form. */
   signup: {
-    bjj: "https://kick.site/n2derupz",
-    boxing: "https://kick.site/rzbcdwpk",
-    youngWarriors: "https://kick.site/n2pownlr",
-    trial: "https://kick.site/eda3bzl1",
+    bjj: "/signup?program=bjj",
+    boxing: "/signup?program=boxing",
+    youngWarriors: "/signup?program=young-warriors",
+    trial: "/signup",
   },
   contact: {
     addressLines: ["201 1 ST NW", "Wadena, SK S0A 4J0"],

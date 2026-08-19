@@ -1,0 +1,97 @@
+// Student intake + signed waiver records for the landing-page signup flow.
+// Connection URLs live in prisma.config.ts (Prisma 7), not here.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Program {
+  BJJ
+  BOXING
+  YOUNG_WARRIORS
+  UNDECIDED
+}
+
+enum SignerRole {
+  SELF
+  PARENT_GUARDIAN
+}
+
+enum StudentStatus {
+  NEW
+  CONTACTED
+  ACTIVE
+  INACTIVE
+}
+
+model Student {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  dateOfBirth DateTime @db.Date
+  /// Derived from dateOfBirth on the server at signup time; never trusted from the client.
+  isMinor     Boolean
+  email       String?
+  phone       String?
+  program     Program  @default(UNDECIDED)
+  experience  String?
+
+  // Required when isMinor is true.
+  guardianFirstName    String?
+  guardianLastName     String?
+  guardianRelationship String?
+  guardianEmail        String?
+  guardianPhone        String?
+
+  emergencyName         String
+  emergencyPhone        String
+  emergencyRelationship String?
+  medicalNotes          String?
+
+  status    StudentStatus @default(NEW)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  waivers   Waiver[]
+
+  @@index([createdAt])
+  @@index([lastName, firstName])
+}
+
+model Waiver {
+  id        String  @id @default(cuid())
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId String
+
+  version       String
+  documentTitle String
+  /// Immutable snapshot of the exact wording that was displayed and agreed to, so
+  /// editing the current waiver never changes what an existing record says was signed.
+  documentText  String
+
+  /// Printed name, matched against the student's or guardian's name. Not the signature itself.
+  signerName         String
+  signerRole         SignerRole
+  signerRelationship String?
+  signerEmail        String
+  photoConsent       Boolean    @default(false)
+
+  /// Hand-drawn signature as PNG bytes. Served only through an authenticated route.
+  signatureImage  Bytes
+  /// Pad size in CSS pixels, kept so the PDF can reproduce the original aspect ratio.
+  signatureWidth  Int
+  signatureHeight Int
+
+  signedAt           DateTime  @default(now())
+  ipAddress          String?
+  userAgent          String?
+  confirmationSentAt DateTime?
+  createdAt          DateTime  @default(now())
+
+  @@index([studentId])
+  @@index([signedAt])
+}
