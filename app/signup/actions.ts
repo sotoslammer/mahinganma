@@ -137,9 +137,16 @@ export async function submitSignup(
     waiverId = student.waivers[0].id;
   } catch (error) {
     console.error("[signup] failed to record signup", error);
+    const detail = error instanceof Error ? error.message : String(error);
+    // Surface the common Neon-paused case so the gym owner can fix it without logs.
+    const paused =
+      /P1001|P1017|ECONNREFUSED|Can't reach database server|timeout|Connection terminated|ENOTFOUND/i.test(
+        detail,
+      );
     return {
-      message:
-        "Something went wrong saving your signup. Please try again, or call us and we will get you set up.",
+      message: paused
+        ? "We could not reach the database. If you just woke the Neon project, wait a few seconds and try again."
+        : "Something went wrong saving your signup. Please try again, or call us and we will get you set up.",
     };
   }
 
