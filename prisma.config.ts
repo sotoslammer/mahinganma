@@ -12,13 +12,20 @@ import { defineConfig } from "prisma/config";
  * `prisma generate` (and therefore `npm install` and `next build`) on machines
  * that have no database configured yet.
  */
-const datasourceUrl =
-  process.env.DATABASE_URL_UNPOOLED ||
-  process.env.POSTGRES_URL_NON_POOLING ||
-  process.env.DATABASE_URL ||
-  process.env.POSTGRES_PRISMA_URL ||
-  process.env.POSTGRES_URL ||
-  "";
+const datasourceUrl = (() => {
+  const raw =
+    process.env.DATABASE_URL_UNPOOLED ||
+    process.env.POSTGRES_URL_NON_POOLING ||
+    process.env.DIRECT_URL ||
+    process.env.DATABASE_URL ||
+    process.env.POSTGRES_PRISMA_URL ||
+    process.env.POSTGRES_URL ||
+    "";
+  if (!raw) return "";
+  // Migrations need TLS to Neon; some console copies omit sslmode.
+  if (/[?&]sslmode=/i.test(raw)) return raw;
+  return raw.includes("?") ? `${raw}&sslmode=require` : `${raw}?sslmode=require`;
+})();
 
 export default defineConfig({
   schema: "prisma/schema.prisma",

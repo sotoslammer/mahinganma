@@ -9,12 +9,15 @@ import { PrismaClient } from "@/lib/generated/prisma/client";
  * because the variable was named differently.
  */
 function resolveDatabaseUrl(): string | undefined {
-  return (
+  const raw =
     process.env.DATABASE_URL ||
     process.env.POSTGRES_PRISMA_URL ||
     process.env.POSTGRES_URL ||
-    process.env.POSTGRES_URL_POOLED
-  );
+    process.env.POSTGRES_URL_POOLED;
+  if (!raw) return undefined;
+  // Runtime queries against Neon need TLS; some console copies omit sslmode.
+  if (/[?&]sslmode=/i.test(raw)) return raw;
+  return raw.includes("?") ? `${raw}&sslmode=require` : `${raw}?sslmode=require`;
 }
 
 function createClient() {
