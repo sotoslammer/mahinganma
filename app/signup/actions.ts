@@ -90,6 +90,9 @@ export async function submitSignup(
   let studentId: string;
   let waiverId: string;
   try {
+    // Prisma Bytes over the pg driver adapter expects a Node Buffer, not a
+    // browser-shaped Uint8Array view (which can fail at bind time).
+    const signatureImage = Buffer.from(signature.bytes);
     const student = await getPrisma().student.create({
       data: {
         firstName: data.firstName,
@@ -122,7 +125,7 @@ export async function submitSignup(
               signerRelationship: isMinor ? data.guardianRelationship : null,
               signerEmail,
               photoConsent: data.photoConsent,
-              signatureImage: signature.bytes,
+              signatureImage,
               signatureWidth: signature.width,
               signatureHeight: signature.height,
               ipAddress,
@@ -138,15 +141,24 @@ export async function submitSignup(
   } catch (error) {
     console.error("[signup] failed to record signup", error);
     const detail = error instanceof Error ? error.message : String(error);
+    const code =
+      error && typeof error === "object" && "code" in error
+        ? String((error as { code?: unknown }).code ?? "")
+        : "";
     // Surface the common Neon-paused case so the gym owner can fix it without logs.
     const paused =
       /P1001|P1017|ECONNREFUSED|Can't reach database server|timeout|Connection terminated|ENOTFOUND/i.test(
-        detail,
+        `${code} ${detail}`,
       );
+    const schemaMissing = /P2021|does not exist|relation .* does not exist/i.test(
+      `${code} ${detail}`,
+    );
     return {
       message: paused
         ? "We could not reach the database. If you just woke the Neon project, wait a few seconds and try again."
-        : "Something went wrong saving your signup. Please try again, or call us and we will get you set up.",
+        : schemaMissing
+          ? "The database is missing the signup tables. Redeploy so migrations can run, or check DATABASE_URL_UNPOOLED."
+          : `Something went wrong saving your signup${code ? ` (${code})` : ""}. Please try again, or call us and we will get you set up.`,
     };
   }
 

@@ -130,11 +130,13 @@ export default async function StudentDetailPage({ params }: { params: Promise<{ 
                   className="rounded-[7px] border border-border-strong/40 px-3 py-1.5 transition hover:border-accent hover:text-accent"
                   href={`/admin/students/${student.id}/waivers/${waiver.id}`}
                 >
-                  View
+                  View waiver
                 </Link>
                 <a
                   className="rounded-[7px] bg-accent px-3 py-1.5 font-medium text-white transition hover:bg-accent-hover"
                   href={`/admin/students/${student.id}/waivers/${waiver.id}/pdf`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   PDF
                 </a>
