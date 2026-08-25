@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is the Next.js site for [Mahingan Martial Arts](https://mahinganma.com).
 
-## Getting Started
-
-First, run the development server:
+## Getting started
 
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Smartwaiver signup links
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Landing-page CTAs use Smartwaiver URLs with a per-program `auto_tag` (`bjj`, `boxing`, `young_warriors`, `trial`). Set `NEXT_PUBLIC_SMARTWAIVER_TEMPLATE_ID` (or per-program `NEXT_PUBLIC_SMARTWAIVER_WAIVER_*` overrides).
 
-## Learn More
+## Admin roster
 
-To learn more about Next.js, take a look at the following resources:
+Staff tools live at `/admin` (sign-in only; emails must be listed in `ADMIN_EMAILS`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Provision Lakebase Postgres and Neon Auth, then copy `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `NEON_AUTH_BASE_URL`, and `NEON_AUTH_COOKIE_SECRET`.
+2. Create staff users in Neon Auth (there is no public sign-up page).
+3. Run `npm run db:migrate` against the unpooled URL.
+4. Point the Smartwaiver webhook at `/api/webhooks/smartwaiver/<SMARTWAIVER_WEBHOOK_TOKEN>`.
+5. Point Stripe at `/api/webhooks/stripe` and Twilio inbound SMS at `/api/webhooks/twilio/inbound`.
+6. Set `CRON_SECRET` so Vercel Cron can call `/api/cron/smartwaiver` and `/api/cron/stripe` once per day (Hobby accounts cannot run more frequent crons; the Smartwaiver webhook still ingests signups in near real time).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+See `.env.example` for the full list of keys. Each integration degrades to a “not configured” state when its secrets are missing.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Marketing email/SMS requires recorded consent (Smartwaiver `marketingAllowed` / custom fields, plus admin, Resend unsubscribe, and SMS `STOP`). Transactional messages do not. Minors are messaged via guardian contact details when present.
