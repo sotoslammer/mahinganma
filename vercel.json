@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/smartwaiver",
+      "schedule": "*/15 * * * *"
+    },
+    {
+      "path": "/api/cron/stripe",
+      "schedule": "0 6 * * *"
+    }
+  ]
+}
