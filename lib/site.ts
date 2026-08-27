@@ -1,4 +1,36 @@
-/** Replace signup URLs with your gym management system links. Contact form posts to `/api/contact` (Resend). */
+/** Signup CTAs point at Smartwaiver (auto_tag identifies the program). Contact form posts to `/api/contact` (Resend). */
+function withAutoTag(url: string, autoTag: string): string {
+  try {
+    const parsed = new URL(url);
+    if (!parsed.searchParams.get("auto_tag")) {
+      parsed.searchParams.set("auto_tag", autoTag);
+    }
+    return parsed.toString();
+  } catch {
+    const join = url.includes("?") ? "&" : "?";
+    return `${url}${join}auto_tag=${encodeURIComponent(autoTag)}`;
+  }
+}
+
+function envWaiver(name: string): string | undefined {
+  const value = process.env[name]?.trim();
+  return value || undefined;
+}
+
+/**
+ * Build a hosted Smartwaiver URL for a program CTA.
+ * Set NEXT_PUBLIC_SMARTWAIVER_TEMPLATE_ID, or a per-program override
+ * (NEXT_PUBLIC_SMARTWAIVER_WAIVER_BJJ, etc.).
+ */
+export function smartwaiverUrl(autoTag: string): string {
+  const overrideKey = `NEXT_PUBLIC_SMARTWAIVER_WAIVER_${autoTag.replace(/-/g, "_").toUpperCase()}`;
+  const override = envWaiver(overrideKey);
+  if (override) return withAutoTag(override, autoTag);
+
+  const templateId = envWaiver("NEXT_PUBLIC_SMARTWAIVER_TEMPLATE_ID") ?? "YOUR_TEMPLATE_ID";
+  return `https://waiver.smartwaiver.com/w/${templateId}/web/?auto_tag=${encodeURIComponent(autoTag)}`;
+}
+
 export const site = {
   /** Canonical site URL (no trailing slash) — used for metadata, sitemap, and structured data */
   url: "https://mahinganma.com",
@@ -15,10 +47,10 @@ export const site = {
   },
   values: ["Discipline", "Respect", "Consistency", "Perseverance"] as const,
   signup: {
-    bjj: "https://kick.site/n2derupz",
-    boxing: "https://kick.site/rzbcdwpk",
-    youngWarriors: "https://kick.site/n2pownlr",
-    trial: "https://kick.site/eda3bzl1",
+    bjj: smartwaiverUrl("bjj"),
+    boxing: smartwaiverUrl("boxing"),
+    youngWarriors: smartwaiverUrl("young_warriors"),
+    trial: smartwaiverUrl("trial"),
   },
   contact: {
     addressLines: ["201 1 ST NW", "Wadena, SK S0A 4J0"],
