@@ -1,0 +1,7 @@
+{
+  "enabledPlugins": {
+    "neon@claude-plugins-official": true,
+    "vercel@claude-plugins-official": true,
+    "resend@claude-plugins-official": true
+  }
+}
